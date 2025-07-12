@@ -16,7 +16,52 @@
 </head>
 <body>
   <button class="lang-toggle-btn" onclick="toggleLanguage()">Deutsch</button>
+  
+    <!-- Video Background Section -->
+    <div class="hero-container">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="/assets/start.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="hero-overlay">
+        Welcome to Michael's site
+      </div>
+    </div>
 
+  <style>
+          .hero-container {
+          position: relative;
+          width: 100vw;
+          height: 100vh;
+          overflow: hidden;
+        }
+        
+        .hero-video {
+          position: absolute;
+          top: 0; left: 0;
+          width: 100vw;
+          height: 100vh;
+          object-fit: cover;
+          z-index: 1;
+        }
+        
+        .hero-overlay {
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          color: #00ffd0;
+          font-size: 3rem;
+          font-family: 'Roboto Mono', monospace;
+          text-shadow: 0 4px 24px #000, 0 1px 4px #111;
+          z-index: 2;
+          white-space: pre-line;
+          text-align: center;
+          padding: 1rem 2rem;
+          background: rgba(0,0,0,0.2);
+          border-radius: 12px;
+        }
+    </style>
+  
   <header>
     <h1 class="lang-en">Michael Møller</h1>
     <h1 class="lang-de">Michael Møller</h1>
