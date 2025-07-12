@@ -4,93 +4,261 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Michael Møller | Infrastructure Consultant</title>
-  <!-- ... your existing styles ... -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
   <style>
-    .lang-de { display: none; }
-    .lang-toggle-btn {
-      position: absolute; right: 1rem; top: 1rem; z-index: 10;
-      background: #00ffd0; color: #000; border: none; padding: 0.5em 1em;
-      border-radius: 5px; font-weight: bold; cursor: pointer;
+    body {
+      margin: 0;
+      font-family: 'Roboto Mono', monospace;
+      background: #0e0e10;
+      color: #f0f0f5;
+      line-height: 1.6;½
+      overflow-x: hidden;
+    }
+    header {
+      background: linear-gradient(90deg, #0f0f11 0%, #1f1f23 100%);
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 2px solid #282828;
+      animation: fadeIn 2s ease-in;
+    }
+    header h1 {
+      font-size: 2rem;
+      margin: 0;
+      color: #00ffd0;
+    }
+    header p {
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+      color: #ccc;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      background-color: #1a1a1e;
+      padding: 1rem;
+    }
+    nav a {
+      color: #00ffd0;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    section {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: #1a1a1e;
+      border-radius: 8px;
+      animation: fadeInUp 1s ease-in;
+    }
+    h2 {
+      color: #00ffd0;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.3rem;
+    }
+    .button {
+      display: inline-block;
+      background: #00ffd0;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .button:hover {
+      background: #00cfa6;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .ai-graphic {
+      width: 100%;
+      height: 200px;
+      background: url('https://cdn.pixabay.com/photo/2020/04/01/09/48/artificial-intelligence-4997236_1280.jpg') center/cover no-repeat;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .language-switch {
+      background: none;
+      border: 1px solid #00ffd0;
+      color: #00ffd0;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Roboto Mono', monospace;
+      transition: all 0.3s;
+    }
+    .language-switch:hover {
+      background: #00ffd0;
+      color: #000;
+    }
+    
+    /* Matrix Animation */
+    .matrix-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .matrix-stream {
+      position: absolute;
+      color: #00ffd0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 14px;
+    }
+    
+    .matrix-char {
+      width: 14px;
+      height: 20px;
+      position: absolute;
+      text-align: center;
+      animation: matrixFade 2s forwards;
+      text-shadow: 0 0 8px rgba(0, 255, 208, 0.5);
+    }
+    
+    @keyframes matrixFade {
+      0% {
+        opacity: 1;
+        color: #fff;
+        text-shadow: 0 0 8px #fff, 0 0 20px rgba(0, 255, 208, 1);
+      }
+      15% {
+        opacity: 1;
+        color: #00ffd0;
+        text-shadow: 0 0 8px rgba(0, 255, 208, 0.8);
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+        color: #fff;
+        text-shadow: 0 0 8px #fff, 0 0 20px rgba(0, 255, 208, 1);
+      }
+      10% {
+        opacity: 1;
+        color: #00ffd0;
+        text-shadow: 0 0 8px rgba(0, 255, 208, 0.8);
+      }
+      50% {
+        opacity: 0.8;
+        color: #00ffd0;
+        text-shadow: 0 0 8px rgba(0, 255, 208, 0.5);
+      }
+      85% {
+        opacity: 0.3;
+        color: #00ffd0;
+        text-shadow: 0 0 8px rgba(0, 255, 208, 0.2);
+      }
+      100% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <button class="lang-toggle-btn" onclick="toggleLanguage()">Deutsch</button>
-  
-    <!-- Video Background Section -->
-    <div class="hero-container">
-      <video class="hero-video" autoplay muted loop playsinline>
-        <source src="/assets/start.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <div class="hero-overlay">
-        Welcome to Michael's site
-      </div>
-    </div>
-
-  <style>
-          .hero-container {
-          position: relative;
-          width: 100vw;
-          height: 100vh;
-          overflow: hidden;
-        }
-        
-        .hero-video {
-          position: absolute;
-          top: 0; left: 0;
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover;
-          z-index: 1;
-        }
-        
-        .hero-overlay {
-          position: absolute;
-          top: 50%; left: 50%;
-          transform: translate(-50%, -50%);
-          color: #00ffd0;
-          font-size: 3rem;
-          font-family: 'Roboto Mono', monospace;
-          text-shadow: 0 4px 24px #000, 0 1px 4px #111;
-          z-index: 2;
-          white-space: pre-line;
-          text-align: center;
-          padding: 1rem 2rem;
-          background: rgba(0,0,0,0.2);
-          border-radius: 12px;
-        }
-    </style>
-  
   <header>
-    <h1 class="lang-en">Michael Møller</h1>
-    <h1 class="lang-de">Michael Møller</h1>
-    <p class="lang-en">Freelance Infrastructure Consultant | SCCM & Cloud Expert | Modern Workplace Engineer</p>
-    <p class="lang-de">Freiberuflicher Infrastrukturberater | SCCM & Cloud Experte | Modern Workplace Engineer</p>
+    <h1>Michael Møller</h1>
+    <p>Freelance Infrastructure Consultant | SCCM & Cloud Expert | Modern Workplace Engineer</p>
   </header>
   <nav>
-    <a class="lang-en" href="#about">About</a>
-    <a class="lang-de" href="#about">Über mich</a>
-    <!-- repeat for other nav items -->
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <button class="language-switch" onclick="toggleLanguage()">DE/EN</button>
   </nav>
-  <section id="about">
-    <h2 class="lang-en">About Me</h2>
-    <h2 class="lang-de">Über mich</h2>
-    <p class="lang-en">I specialize in high-security infrastructure solutions, ...</p>
-    <p class="lang-de">Ich spezialisiere mich auf hochsichere Infrastrukturlösungen, ...</p>
-  </section>
-  <!-- Repeat structure for all sections... -->
 
-  <script>
-    let currentLang = 'en';
-    function toggleLanguage() {
-      currentLang = currentLang === 'en' ? 'de' : 'en';
-      document.documentElement.lang = currentLang;
-      document.querySelectorAll('.lang-en').forEach(el => el.style.display = currentLang === 'en' ? '' : 'none');
-      document.querySelectorAll('.lang-de').forEach(el => el.style.display = currentLang === 'de' ? '' : 'none');
-      // Change button text
-      document.querySelector('.lang-toggle-btn').textContent = currentLang === 'en' ? 'Deutsch' : 'English';
-    }
-  </script>
+  <section id="about">
+    <div class="ai-graphic"></div>
+    <h2>About Me</h2>
+    <p>I specialize in high-security infrastructure solutions, system modernization, and complex enterprise deployments. With deep hands-on experience in SCCM, Intune, Azure, and large-scale rollouts, I've been a core technical asset for defense, finance, and manufacturing clients. I’m fluent in bridging the gap between compliance, automation, and performance in global organizations.</p>
+  </section>
+
+  <section id="services">
+    <h2>Services</h2>
+    <ul>
+      <li>Infrastructure Modernization & Migration (Windows 10/11, Azure, Intune)</li>
+      <li>SCCM & MECM Design, Implementation, and Optimization</li>
+      <li>Cloud Architecture & Security-Hardened MDM Solutions</li>
+      <li>3rd-Level Support, Packaging, and Rollouts for Enterprise Apps</li>
+      <li>Compliance (NIST/ISO 27000) Infrastructure Design</li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2>Recent Projects</h2>
+    <ul>
+      <li><strong>AXA Konzern AG:</strong> Overhauled SCCM deployment strategy to replace legacy MDT.</li>
+      <li><strong>Rheinmetall AG:</strong> Designed MDM architecture for aerospace defense project (NIST-compliant).</li>
+      <li><strong>Mercedes Benz:</strong> Oversaw vendor solutions and Windows 11 pilot upgrade planning.</li>
+      <li><strong>AVEVA:</strong> Full lifecycle application packaging + SCCM/Intune deployment pipeline.</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:mokka83@gmail.com">mokka83@gmail.com</a></p>
+    <p>Phone: +49 151 20275443</p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/mokka83/" target="_blank">View Profile</a></p>
+    <p><a href="https://calendly.com/YOUR-CALENDLY-HANDLE" class="button" target="_blank">Book a Meeting</a></p>
+  </section>
+
+  <section id="impressum">
+    <h2>Impressum</h2>
+    <p><strong>Freelancer Michael Møller</strong><br>
+    Frühlingstraße 40A<br>
+    82131 Gauting<br>
+    Deutschland</p>
+    <p>Telefon: +49 151 20275443<br>
+    E-Mail: <a href="mailto:mokka83@gmail.com">mokka83@gmail.com</a></p>
+    <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br>
+    <strong>DE332500754</strong></p>
+    <p>Inhaltlich Verantwortlicher gemäß § 55 Abs. 2 RStV:<br>
+    Michael Møller (Anschrift wie oben)</p>
+  </section>
+
+  <footer>
+    &copy; 2025 Michael Møller. All rights reserved.<br>
+    <small>Freelancer Michael Møller | USt-ID DE332500754</small>
+  </footer>
+  <div class="matrix-background"></div>
+  <script src="translations.js"></script>
+  <script src="script.js"></script>
+  <script src="matrix.js"></script>
 </body>
 </html>
