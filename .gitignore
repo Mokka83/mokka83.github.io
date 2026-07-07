@@ -1,0 +1,13 @@
+.astro/
+.tmp/
+.npm-cache/
+dist/
+node_modules/
+.env
+.env.*
+!.env.example
+npm-debug.log*
+*.local
+.netlify/
+public/admin/decap-cms-app.js
+public/admin/*.decap-cms-app.js

@@ -1,0 +1,80 @@
+---
+import { locales, localeNames, navLabels, site } from "../data/site.mjs";
+import "../styles/global.css";
+
+const {
+  title,
+  description,
+  locale = "en",
+  path = "/",
+  noindex = false
+} = Astro.props;
+
+const lang = locale as "en" | "de" | "da";
+const canonical = new URL(path, Astro.site || site.domain).toString();
+const labels = navLabels[lang];
+const navItems = [
+  ["expertise", labels.expertise],
+  ["projects", labels.projects],
+  ["articles", labels.articles],
+  ["scripts", labels.scripts],
+  ["cv", labels.cv],
+  ["contact", labels.contact]
+];
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <link rel="canonical" href={canonical} />
+    {locales.map((code) => <link rel="alternate" hreflang={code} href={new URL(path.replace(/^\/(en|de|da)/, `/${code}`), Astro.site || site.domain).toString()} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(path.replace(/^\/(en|de|da)/, "/en"), Astro.site || site.domain).toString()} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og/michael-moeller-og.svg" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      name: "Michael Møller",
+      url: "https://michaelmoeller.io",
+      description,
+      sameAs: [site.linkedin]
+    })} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href={`/${locale}/`} aria-label="Michael Møller home">
+        <span class="mark">MM</span>
+        <span>Michael Møller</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        {navItems.map(([slug, label]) => <a href={`/${locale}/${slug}/`}>{label}</a>)}
+      </nav>
+      <div class="header-actions" aria-label="Language selection">
+        {(locales as Array<"en" | "de" | "da">).map((code) => <a class={code === lang ? "active" : ""} href={`/${code}/`} aria-label={localeNames[code]}>{code.toUpperCase()}</a>)}
+        {site.bookingUrl && <a class="button compact" href={site.bookingUrl} target="_blank" rel="noreferrer">{labels.book}</a>}
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <strong>Michael Møller</strong>
+        <span>Independent IT Consultant</span>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href={`/${locale}/contact/`}>{labels.contact}</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/impressum/">Impressum</a>
+        <a href={site.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+      </nav>
+    </footer>
+  </body>
+</html>

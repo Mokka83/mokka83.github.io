@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { cv } from "../../../data/cv-data.mjs";
+import { locales, ui } from "../../../data/site.mjs";
+export const getStaticPaths = () => locales.map((locale) => ({ params: { locale } }));
+const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+const data = cv[locale];
+const copy = ui[locale];
+const articles = (await getCollection("articles")).filter((entry) => entry.data.locale === locale && !entry.data.draft);
+---
+<BaseLayout title={`Articles | ${data.name}`} description={copy.articlesEmpty} locale={locale} path={`/${locale}/articles/`}>
+  <section class="page-header"><h1>Articles</h1><p>{copy.articlesEmpty}</p></section>
+  <section class="section cards">
+    {articles.length === 0 ? <p class="empty">{copy.articlesEmpty}</p> : articles.map((article) => <article class="panel"><h2>{article.data.title}</h2><p>{article.data.description}</p></article>)}
+  </section>
+</BaseLayout>

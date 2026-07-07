@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ExpertiseGrid from "../../components/ExpertiseGrid.astro";
+import { cv } from "../../data/cv-data.mjs";
+import { locales } from "../../data/site.mjs";
+export const getStaticPaths = () => locales.map((locale) => ({ params: { locale } }));
+const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+const data = cv[locale];
+---
+<BaseLayout title={`Expertise | ${data.name}`} description={data.descriptor} locale={locale} path={`/${locale}/expertise/`}>
+  <section class="page-header">
+    <p class="eyebrow">{data.descriptor}</p>
+    <h1>Expertise</h1>
+    <p>{data.profile[1]}</p>
+  </section>
+  <section class="section">
+    <ExpertiseGrid items={data.expertise} />
+  </section>
+</BaseLayout>

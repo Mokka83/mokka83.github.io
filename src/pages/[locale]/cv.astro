@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EngagementList from "../../components/EngagementList.astro";
+import ExpertiseGrid from "../../components/ExpertiseGrid.astro";
+import { cv } from "../../data/cv-data.mjs";
+import { locales, ui } from "../../data/site.mjs";
+export const getStaticPaths = () => locales.map((locale) => ({ params: { locale } }));
+const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+const data = cv[locale];
+const copy = ui[locale];
+---
+<BaseLayout title={`CV | ${data.name}`} description={data.profile[0]} locale={locale} path={`/${locale}/cv/`}>
+  <section class="page-header">
+    <p class="eyebrow">{data.descriptor}</p>
+    <h1>CV</h1>
+    <p>{data.profile[0]}</p>
+    <div class="actions">
+      <a class="button" href={`/downloads/cv/michael-moeller-cv-${locale}.pdf`}>{copy.downloadPdf}</a>
+      <a class="button secondary" href={`/downloads/cv/michael-moeller-cv-${locale}.docx`}>{copy.downloadDocx}</a>
+    </div>
+  </section>
+  <section class="section readable">
+    <h2>Profile</h2>
+    {data.profile.map((paragraph: string) => <p>{paragraph}</p>)}
+    <p><strong>Languages:</strong> {data.languages}</p>
+  </section>
+  <section class="section">
+    <h2>{data.engagementTitle}</h2>
+    <p>{data.engagementNote}</p>
+    <EngagementList cv={data} />
+  </section>
+  <section class="section muted">
+    <h2>Expertise</h2>
+    <ExpertiseGrid items={data.expertise} />
+  </section>
+  <section class="section split">
+    <article>
+      <h2>Education</h2>
+      {data.education.map((item: any) => <p><strong>{item.title}</strong><br />{item.place} · {item.year}<br />{item.description}</p>)}
+    </article>
+    <article>
+      <h2>Selected Certifications and Training</h2>
+      <ul>{data.certifications.map((item: string) => <li>{item}</li>)}</ul>
+    </article>
+  </section>
+</BaseLayout>

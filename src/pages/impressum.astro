@@ -1,0 +1,7 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ui } from "../data/site.mjs";
+---
+<BaseLayout title="Impressum | Michael Møller" description="Publication-review legal placeholder." locale="en" path="/impressum/" noindex={true}>
+  <section class="page-header"><h1>Impressum</h1><p>{ui.en.legalReview}</p></section>
+</BaseLayout>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { cv } from "../../data/cv-data.mjs";
+import { locales, site, ui } from "../../data/site.mjs";
+export const getStaticPaths = () => locales.map((locale) => ({ params: { locale } }));
+const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+const data = cv[locale];
+const copy = ui[locale];
+---
+<BaseLayout title={`Contact | ${data.name}`} description="Contact form for consulting inquiries." locale={locale} path={`/${locale}/contact/`}>
+  <section class="page-header">
+    <p class="eyebrow">{data.headline}</p>
+    <h1>{copy.discuss}</h1>
+    <p>{data.availability}</p>
+  </section>
+  <section class="section contact-shell">
+    <form class="contact-form" method="post" action="/.netlify/functions/contact" data-contact-form>
+      <input type="hidden" name="locale" value={locale} />
+      <input type="hidden" name="startedAt" value={Date.now().toString()} />
+      <p class="hidden-field"><label>Leave this field empty <input name="website" autocomplete="off" tabindex="-1" /></label></p>
+      <label>Name <input name="name" required maxlength="120" autocomplete="name" /></label>
+      <label>Company / organisation <input name="company" maxlength="160" autocomplete="organization" /></label>
+      <label>Email <input name="email" required type="email" maxlength="180" autocomplete="email" /></label>
+      <label>Optional telephone <input name="telephone" maxlength="60" autocomplete="tel" /></label>
+      <label>Topic <input name="topic" required maxlength="160" /></label>
+      <label>Message <textarea name="message" required maxlength="4000" rows="8"></textarea></label>
+      <label class="checkbox"><input type="checkbox" name="consent" value="yes" required /> {copy.consent}</label>
+      {site.turnstileSiteKey && <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey}></div>}
+      {site.turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+      <button class="button" type="submit">{copy.submit}</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </section>
+  <script>
+    const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = form.querySelector<HTMLElement>(".form-status");
+      if (!status) return;
+      const response = await fetch(form.action, { method: "POST", body: new FormData(form) });
+      status.textContent = response.ok ? "Thank you. Your inquiry has been received and will be reviewed before a reply is sent." : "The message could not be sent. Please review the form and try again.";
+      if (response.ok) form.reset();
+    });
+  </script>
+</BaseLayout>

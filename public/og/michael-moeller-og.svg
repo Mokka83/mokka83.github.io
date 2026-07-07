@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#091016"/>
+  <rect x="80" y="80" width="1040" height="470" fill="#101a22" stroke="#263744"/>
+  <text x="130" y="220" fill="#9bd7ef" font-family="Arial, sans-serif" font-size="46" font-weight="700">MM</text>
+  <text x="130" y="330" fill="#edf4f7" font-family="Arial, sans-serif" font-size="82" font-weight="700">Michael Møller</text>
+  <text x="130" y="410" fill="#a8b7c0" font-family="Arial, sans-serif" font-size="36">Independent IT Consultant</text>
+  <text x="130" y="470" fill="#62b7df" font-family="Arial, sans-serif" font-size="28">Modern Workplace · Endpoint Management · Enterprise Automation</text>
+</svg>

@@ -1,0 +1,26 @@
+{
+  "name": "michaelmoeller-website-v1",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "set ASTRO_TELEMETRY_DISABLED=1&& set TMP=.tmp&& set TEMP=.tmp&& astro dev",
+    "prepare:admin": "node scripts/prepare-admin.mjs",
+    "check": "set ASTRO_TELEMETRY_DISABLED=1&& set TMP=.tmp&& set TEMP=.tmp&& astro check",
+    "build": "npm run prepare:admin && set ASTRO_TELEMETRY_DISABLED=1&& set TMP=.tmp&& set TEMP=.tmp&& astro build",
+    "export:cv": "set TMP=.tmp&& set TEMP=.tmp&& node scripts/export-cv.mjs",
+    "verify:downloads": "set TMP=.tmp&& set TEMP=.tmp&& node scripts/verify-downloads.mjs",
+    "verify:public-safety": "set TMP=.tmp&& set TEMP=.tmp&& node scripts/verify-public-safety.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "0.9.9",
+    "@astrojs/netlify": "6.6.5",
+    "@astrojs/sitemap": "3.7.3",
+    "astro": "5.18.2",
+    "decap-cms-app": "3.14.1",
+    "docx": "9.7.1",
+    "pdfkit": "0.19.1",
+    "typescript": "6.0.3"
+  },
+  "devDependencies": {}
+}

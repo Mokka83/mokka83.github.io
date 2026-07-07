@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const scripts = (await getCollection("scripts")).filter((entry) => !entry.data.draft);
+  return scripts.map((entry) => ({
+    params: { locale: entry.data.locale, slug: entry.slug.replace(`${entry.data.locale}-`, "") },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<BaseLayout title={`${entry.data.title} | Michael Møller`} description={entry.data.summary} locale={entry.data.locale} path={`/${entry.data.locale}/scripts/${Astro.params.slug}/`}>
+  <article class="page-header readable">
+    <p class="eyebrow">{entry.data.platform} · {entry.data.riskLevel}</p>
+    <h1>{entry.data.title}</h1>
+    <p>{entry.data.summary}</p>
+  </article>
+  <section class="section readable">
+    <p><strong>Last reviewed:</strong> {entry.data.lastReviewed.toLocaleDateString(entry.data.locale)}</p>
+    <p><strong>Disclaimer:</strong> Test before production use. No warranty is provided.</p>
+    <Content />
+  </section>
+</BaseLayout>

@@ -1,0 +1,18 @@
+---
+const { cv, limit } = Astro.props;
+const items = (limit ? cv.engagements.slice(0, limit) : cv.engagements) as any[];
+---
+<div class="engagement-list">
+  {items.map((item) => (
+    <article class="engagement">
+      <div>
+        <p class="period">{item.period}</p>
+        <h3>{item.title}</h3>
+        <p class="client">{item.client}</p>
+      </div>
+      <p>{item.summary}</p>
+      {item.focus?.length > 0 && <ul>{item.focus.map((focus: string) => <li>{focus}</li>)}</ul>}
+      {item.technologies?.length > 0 && <p class="tags">{item.technologies.map((tag: string) => <span>{tag}</span>)}</p>}
+    </article>
+  ))}
+</div>

@@ -1,0 +1,14 @@
+---
+const { items } = Astro.props;
+const groups = items as any[];
+---
+<div class="grid">
+  {groups.map((group) => (
+    <section class="panel">
+      <h3>{group.title}</h3>
+      <ul>
+        {group.items.map((item: string) => <li>{item}</li>)}
+      </ul>
+    </section>
+  ))}
+</div>

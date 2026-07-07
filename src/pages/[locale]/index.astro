@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import EngagementList from "../../components/EngagementList.astro";
+import ExpertiseGrid from "../../components/ExpertiseGrid.astro";
+import { cv } from "../../data/cv-data.mjs";
+import { locales, ui } from "../../data/site.mjs";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+const data = cv[locale];
+const copy = ui[locale];
+---
+<BaseLayout title={`${data.name} | ${data.headline}`} description={data.profile[0]} locale={locale} path={`/${locale}/`}>
+  <Hero cv={data} ui={copy} />
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">{data.headline}</p>
+      <h2>{data.engagementTitle}</h2>
+      <p>{data.engagementNote}</p>
+    </div>
+    <EngagementList cv={data} limit={4} />
+  </section>
+  <section class="section muted">
+    <div class="section-heading">
+      <p class="eyebrow">Capabilities</p>
+      <h2>{copy.selectedEngagements === "Selected Consulting Engagements" ? "Expertise grouped by delivery outcome" : "Expertise"}</h2>
+    </div>
+    <ExpertiseGrid items={data.expertise} />
+  </section>
+  <section class="section split">
+    <article>
+      <h2>{copy.articlesEmpty}</h2>
+      <a class="text-link" href={`/${locale}/articles/`}>Articles</a>
+    </article>
+    <article>
+      <h2>{copy.scriptsEmpty}</h2>
+      <a class="text-link" href={`/${locale}/scripts/`}>Script Library</a>
+    </article>
+  </section>
+</BaseLayout>

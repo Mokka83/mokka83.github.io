@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EngagementList from "../../components/EngagementList.astro";
+import { cv } from "../../data/cv-data.mjs";
+import { locales } from "../../data/site.mjs";
+export const getStaticPaths = () => locales.map((locale) => ({ params: { locale } }));
+const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+const data = cv[locale];
+---
+<BaseLayout title={`${data.engagementTitle} | ${data.name}`} description={data.engagementNote} locale={locale} path={`/${locale}/projects/`}>
+  <section class="page-header">
+    <p class="eyebrow">{data.headline}</p>
+    <h1>{data.engagementTitle}</h1>
+    <p>{data.engagementNote}</p>
+  </section>
+  <section class="section">
+    <EngagementList cv={data} />
+  </section>
+</BaseLayout>

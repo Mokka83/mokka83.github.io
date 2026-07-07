@@ -1,0 +1,54 @@
+backend:
+  name: git-gateway
+  branch: website-v1
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "articles"
+    label: "Articles"
+    folder: "src/content/articles"
+    create: true
+    slug: "{{locale}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Locale", name: "locale", widget: "select", options: ["en", "de", "da"] }
+      - { label: "Published", name: "publishedAt", widget: "datetime" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: true }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "scripts"
+    label: "Script Library"
+    folder: "src/content/scripts"
+    create: true
+    slug: "{{locale}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Locale", name: "locale", widget: "select", options: ["en", "de", "da"] }
+      - { label: "Platform", name: "platform", widget: "string" }
+      - { label: "Risk Level", name: "riskLevel", widget: "select", options: ["Low", "Moderate", "High"] }
+      - { label: "Last Reviewed", name: "lastReviewed", widget: "datetime" }
+      - { label: "Prerequisites", name: "prerequisites", widget: "list", required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: true }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "projects"
+    label: "Selected Engagements"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{locale}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Client", name: "client", widget: "string" }
+      - { label: "Period", name: "period", widget: "string" }
+      - { label: "Locale", name: "locale", widget: "select", options: ["en", "de", "da"] }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Scope", name: "scope", widget: "list", required: false }
+      - { label: "Technologies", name: "technologies", widget: "list", required: false }
+      - { label: "Visibility", name: "visibility", widget: "select", options: ["public", "private"], default: "public" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }

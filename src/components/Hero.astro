@@ -1,0 +1,13 @@
+---
+const { cv, ui } = Astro.props;
+---
+<section class="hero">
+  <div class="eyebrow">{cv.descriptor}</div>
+  <h1>{cv.name}</h1>
+  <p class="lead">{cv.profile[0]}</p>
+  <div class="actions">
+    <a class="button" href={`/${cv.locale}/cv/`}>{ui.viewCv}</a>
+    <a class="button secondary" href={`/${cv.locale}/contact/`}>{ui.discuss}</a>
+    <a class="text-link" href={cv.linkedin} target="_blank" rel="noreferrer">{ui.linkedin}</a>
+  </div>
+</section>
