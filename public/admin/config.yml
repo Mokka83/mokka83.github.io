@@ -14,7 +14,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Locale", name: "locale", widget: "select", options: ["en", "de", "da"] }
+      - { label: "Locale", name: "locale", widget: "select", options: ["en", "de", "da", "all"] }
       - { label: "Published", name: "publishedAt", widget: "datetime" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
       - { label: "Draft", name: "draft", widget: "boolean", default: true }
@@ -34,6 +34,7 @@ collections:
       - { label: "Last Reviewed", name: "lastReviewed", widget: "datetime" }
       - { label: "Prerequisites", name: "prerequisites", widget: "list", required: false }
       - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Download path", name: "downloadPath", widget: "string", required: false, hint: "Optional public path, for example /downloads/scripts/example.ps1" }
       - { label: "Draft", name: "draft", widget: "boolean", default: true }
       - { label: "Body", name: "body", widget: "markdown" }
   - name: "projects"

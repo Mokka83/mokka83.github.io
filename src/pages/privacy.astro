@@ -1,7 +1,59 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { ui } from "../data/site.mjs";
 ---
-<BaseLayout title="Privacy | Michael Møller" description="Publication-review privacy placeholder." locale="en" path="/privacy/" noindex={true}>
-  <section class="page-header"><h1>Privacy</h1><p>{ui.en.legalReview}</p></section>
+<BaseLayout title="Datenschutz | Michael Møller" description="Datenschutzhinweise für michaelmoeller.io." locale="de" path="/privacy/">
+  <section class="page-header readable">
+    <h1>Datenschutz</h1>
+    <p>Datenschutzhinweise für michaelmoeller.io. Stand: 8. Juli 2026.</p>
+  </section>
+
+  <section class="section readable legal-page">
+    <h2>1. Verantwortlicher</h2>
+    <p>
+      Michael Møller<br />
+      Frühlingstr. 40a<br />
+      82131 Gauting<br />
+      Deutschland<br />
+      E-Mail: legal@michaelmoeller.io
+    </p>
+
+    <h2>2. Zweck dieser Website</h2>
+    <p>Diese Website dient der beruflichen Präsentation, der Bereitstellung von CV-Downloads, Artikeln, einer Script Library sowie der Bearbeitung von Kontakt- und Projektanfragen.</p>
+
+    <h2>3. Hosting und Server-Logs</h2>
+    <p>Die Website wird über Netlify bereitgestellt. Beim Aufruf der Website können technisch erforderliche Zugriffsdaten verarbeitet werden, insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene URL, Referrer, User Agent, Statuscode und übertragene Datenmenge.</p>
+    <p>Zweck der Verarbeitung ist die sichere, zuverlässige und performante Bereitstellung der Website. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Server-Logs werden nach den Vorgaben und Aufbewahrungsfristen des jeweiligen Hosting-Anbieters verarbeitet.</p>
+
+    <h2>4. DNS, Sicherheit und E-Mail-Routing</h2>
+    <p>Cloudflare kann für Domainbetrieb, DNS-Auflösung, E-Mail-Routing sowie Sicherheits- und Verfügbarkeitsfunktionen eingesetzt werden. Dabei können technische Daten verarbeitet werden, die für den Betrieb der Domain, die Zustellung von Anfragen und den Schutz der Website erforderlich sind.</p>
+    <p>Zweck ist der stabile und sichere Betrieb der Website und der zugehörigen Domain. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.</p>
+
+    <h2>5. Administration und Content Management</h2>
+    <p>GitHub, Netlify Identity, Git Gateway und Decap CMS werden für Administratoren und berechtigte Redakteure verwendet, um Inhalte zu erstellen, zu bearbeiten und zu veröffentlichen. Diese Verarbeitung betrifft den Administrator- und Redaktionsbereich. Öffentliche Besucher sind hiervon grundsätzlich nicht betroffen, außer durch die Auslieferung der veröffentlichten Website-Inhalte.</p>
+
+    <h2>6. Kontaktformular</h2>
+    <p>Wenn das Kontaktformular verwendet wird, können die eingegebenen Daten verarbeitet werden. Dazu gehören Name, Unternehmen, E-Mail-Adresse, optionale Telefonnummer, Thema, Nachricht, Einwilligungsbestätigung sowie technische Metadaten wie Zeitstempel und sicherheitsbezogene Formularinformationen.</p>
+    <p>Die Formularverarbeitung erfolgt über eine serverseitige Netlify Function. Je nach Konfiguration können Cloudflare Turnstile zur Spam- und Missbrauchsabwehr sowie Resend zur E-Mail-Zustellung eingesetzt werden. Nicht öffentlich sichtbare Empfängeradressen, Schlüssel oder sonstige interne Konfigurationswerte werden nicht veröffentlicht.</p>
+    <p>Zweck der Verarbeitung ist die Bearbeitung von Projekt- und Kontaktanfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit die Anfrage vorvertragliche Kommunikation betrifft, sowie Art. 6 Abs. 1 lit. f DSGVO für allgemeine Anfragen, Sicherheit und Missbrauchsvermeidung.</p>
+
+    <h2>7. CV-Downloads und Script Library</h2>
+    <p>CV-Dateien, Scripts und andere Downloads werden als statische Dateien bereitgestellt. Beim Abruf dieser Dateien können, wie beim sonstigen Website-Zugriff, technische Zugriffsdaten in Hosting-Logs verarbeitet werden.</p>
+    <p>Scripts und technische Inhalte werden vor Veröffentlichung redaktionell geprüft. Downloads können nur bereitgestellt werden, wenn die entsprechende Datei im öffentlichen Downloadbereich vorhanden ist.</p>
+
+    <h2>8. Cookies, Analytics und Tracking</h2>
+    <p>Die öffentliche Website verwendet derzeit keine Analytics- oder Tracking-Cookies. Es werden keine externen Schriftarten, Tracking-Pixel oder vergleichbaren Analysewerkzeuge eingebunden. Cloudflare Turnstile kann nur auf dem Kontaktformular geladen werden, wenn es für die Formularsicherheit konfiguriert ist.</p>
+
+    <h2>9. Externe Links</h2>
+    <p>Diese Website kann auf externe Anbieter verlinken, insbesondere LinkedIn. Ein Buchungslink zu Calendly wird nur angezeigt, wenn er konfiguriert ist. Nach dem Anklicken externer Links verarbeiten die jeweiligen Anbieter personenbezogene Daten in eigener Verantwortung.</p>
+
+    <h2>10. Speicherdauer</h2>
+    <p>Kontaktanfragen werden nur so lange gespeichert, wie es für Bearbeitung, Rückfragen und Anschlusskommunikation erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen. Server-Logs und technische Betriebsdaten unterliegen den Aufbewahrungsregeln der eingesetzten Anbieter.</p>
+
+    <h2>11. Rechte betroffener Personen</h2>
+    <p>Betroffene Personen haben nach Maßgabe der DSGVO das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen. Soweit eine Verarbeitung auf Einwilligung beruht, kann diese Einwilligung mit Wirkung für die Zukunft widerrufen werden.</p>
+    <p>Darüber hinaus besteht das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.</p>
+
+    <h2>12. Keine automatisierte Entscheidungsfindung</h2>
+    <p>Es findet keine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO statt.</p>
+  </section>
 </BaseLayout>

@@ -1,27 +1,65 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import {
+  getDownloadState,
+  isPublicScript,
+  localesForScript,
+  scriptSlug,
+  type SiteLocale,
+  type ScriptEntry
+} from "../../../utils/script-library";
 
 export async function getStaticPaths() {
-  const scripts = (await getCollection("scripts")).filter((entry) => !entry.data.draft);
-  return scripts.map((entry) => ({
-    params: { locale: entry.data.locale, slug: entry.slug.replace(`${entry.data.locale}-`, "") },
-    props: { entry }
-  }));
+  const scripts = (await getCollection("scripts")).filter(isPublicScript);
+  return scripts.flatMap((entry) => localesForScript(entry).map((locale) => ({
+    params: { locale, slug: scriptSlug(entry) },
+    props: { entry, routeLocale: locale }
+  })));
 }
 
-const { entry } = Astro.props;
+const { entry, routeLocale } = Astro.props as { entry: ScriptEntry; routeLocale: SiteLocale };
 const { Content } = await render(entry);
+const download = getDownloadState(entry.data.downloadPath);
 ---
-<BaseLayout title={`${entry.data.title} | Michael Møller`} description={entry.data.summary} locale={entry.data.locale} path={`/${entry.data.locale}/scripts/${Astro.params.slug}/`}>
-  <article class="page-header readable">
+<BaseLayout title={`${entry.data.title} | Michael Møller`} description={entry.data.summary} locale={routeLocale} path={`/${routeLocale}/scripts/${Astro.params.slug}/`}>
+  <article class="page-header readable script-detail-header">
     <p class="eyebrow">{entry.data.platform} · {entry.data.riskLevel}</p>
     <h1>{entry.data.title}</h1>
     <p>{entry.data.summary}</p>
   </article>
-  <section class="section readable">
-    <p><strong>Last reviewed:</strong> {entry.data.lastReviewed.toLocaleDateString(entry.data.locale)}</p>
-    <p><strong>Disclaimer:</strong> Test before production use. No warranty is provided.</p>
-    <Content />
+  <section class="section readable script-detail">
+    <dl class="script-meta detail">
+      <div><dt>Platform</dt><dd>{entry.data.platform}</dd></div>
+      <div><dt>Risk level</dt><dd>{entry.data.riskLevel}</dd></div>
+      <div><dt>Last reviewed</dt><dd>{entry.data.lastReviewed.toLocaleDateString(routeLocale)}</dd></div>
+      <div><dt>Locale</dt><dd>{entry.data.locale === "all" ? "All languages" : entry.data.locale.toUpperCase()}</dd></div>
+    </dl>
+
+    {entry.data.prerequisites.length > 0 && (
+      <section class="script-block">
+        <h2>Prerequisites</h2>
+        <ul>{entry.data.prerequisites.map((item: string) => <li>{item}</li>)}</ul>
+      </section>
+    )}
+
+    {entry.data.tags.length > 0 && <p class="tags">{entry.data.tags.map((tag: string) => <span>{tag}</span>)}</p>}
+
+    <aside class="script-warning">
+      <strong>Test outside production first.</strong>
+      Review the script in a controlled environment and adapt it to your own policies before use.
+    </aside>
+
+    {download.configured && (
+      download.available ? (
+        <p><a class="button" href={download.href}>Download script</a></p>
+      ) : (
+        <p class="empty">Download unavailable. The referenced file is not present in the public download folder.</p>
+      )
+    )}
+
+    <div class="script-body">
+      <Content />
+    </div>
   </section>
 </BaseLayout>

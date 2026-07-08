@@ -3,15 +3,51 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { cv } from "../../../data/cv-data.mjs";
 import { locales, ui } from "../../../data/site.mjs";
+import {
+  getDownloadState,
+  isPublicScript,
+  scriptBelongsToLocale,
+  scriptUrl,
+  type SiteLocale
+} from "../../../utils/script-library";
+
 export const getStaticPaths = () => locales.map((locale) => ({ params: { locale } }));
-const locale = (Astro.params.locale || "en") as "en" | "de" | "da";
+
+const locale = (Astro.params.locale || "en") as SiteLocale;
 const data = cv[locale];
 const copy = ui[locale];
-const scripts = (await getCollection("scripts")).filter((entry) => entry.data.locale === locale && !entry.data.draft);
+const allScripts = await getCollection("scripts");
+const scripts = allScripts
+  .filter((entry) => isPublicScript(entry) && scriptBelongsToLocale(entry, locale))
+  .sort((a, b) => b.data.lastReviewed.getTime() - a.data.lastReviewed.getTime());
 ---
 <BaseLayout title={`Script Library | ${data.name}`} description={copy.scriptsEmpty} locale={locale} path={`/${locale}/scripts/`}>
-  <section class="page-header"><h1>Script Library</h1><p>{copy.scriptsEmpty}</p></section>
+  <section class="page-header">
+    <h1>Script Library</h1>
+    <p>{scripts.length === 0 ? copy.scriptsEmpty : "Reviewed administration scripts and field tools for practical endpoint and workplace operations."}</p>
+  </section>
   <section class="section cards">
-    {scripts.length === 0 ? <p class="empty">{copy.scriptsEmpty}</p> : scripts.map((script) => <article class="panel"><h2>{script.data.title}</h2><p>{script.data.summary}</p><p class="tags"><span>{script.data.riskLevel}</span><span>{script.data.platform}</span></p></article>)}
+    {scripts.length === 0 ? (
+      <p class="empty">{copy.scriptsEmpty}</p>
+    ) : (
+      <div class="script-grid">
+        {scripts.map((script) => {
+          const download = getDownloadState(script.data.downloadPath);
+          return (
+            <article class="panel script-card">
+              <p class="eyebrow">{script.data.platform} · {script.data.riskLevel}</p>
+              <h2><a href={scriptUrl(script, locale)}>{script.data.title}</a></h2>
+              <p>{script.data.summary}</p>
+              <dl class="script-meta">
+                <div><dt>Last reviewed</dt><dd>{script.data.lastReviewed.toLocaleDateString(locale)}</dd></div>
+                <div><dt>Download</dt><dd>{download.configured ? download.available ? "Available" : "Unavailable" : "Not provided"}</dd></div>
+              </dl>
+              {script.data.tags.length > 0 && <p class="tags">{script.data.tags.map((tag: string) => <span>{tag}</span>)}</p>}
+              <a class="text-link" href={scriptUrl(script, locale)}>Open script</a>
+            </article>
+          );
+        })}
+      </div>
+    )}
   </section>
 </BaseLayout>

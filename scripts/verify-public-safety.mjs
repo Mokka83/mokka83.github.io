@@ -5,7 +5,8 @@ const roots = ["dist", "public"].map((root) => join(process.cwd(), root)).filter
 const textExtensions = new Set([".html", ".js", ".css", ".json", ".xml", ".txt", ".svg", ".yml", ".yaml", ".md"]);
 const allowed = [
   "https://www.linkedin.com/in/mokka83/",
-  "form@notify.michaelmoeller.io"
+  "form@notify.michaelmoeller.io",
+  "legal@michaelmoeller.io"
 ];
 
 const allowedVendorFiles = [

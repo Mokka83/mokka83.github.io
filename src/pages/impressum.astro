@@ -1,7 +1,44 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { ui } from "../data/site.mjs";
 ---
-<BaseLayout title="Impressum | Michael Møller" description="Publication-review legal placeholder." locale="en" path="/impressum/" noindex={true}>
-  <section class="page-header"><h1>Impressum</h1><p>{ui.en.legalReview}</p></section>
+<BaseLayout title="Impressum | Michael Møller" description="Impressum und Anbieterkennzeichnung für michaelmoeller.io." locale="de" path="/impressum/">
+  <section class="page-header readable">
+    <h1>Impressum</h1>
+    <p>Angaben gemäß § 5 DDG</p>
+  </section>
+
+  <section class="section readable legal-page">
+    <h2>Diensteanbieter</h2>
+    <p>
+      Michael Møller<br />
+      Frühlingstr. 40a<br />
+      82131 Gauting<br />
+      Deutschland
+    </p>
+    <p>Freiberuflicher IT-Consultant / Independent IT Consultant</p>
+
+    <h2>Kontakt</h2>
+    <p>E-Mail: legal@michaelmoeller.io</p>
+    <p>Diese E-Mail-Adresse dient der gesetzlichen Anbieter- und Rechtskommunikation. Allgemeine Projekt- und Kontaktanfragen sollten, sofern verfügbar, bevorzugt über das Kontaktformular gestellt werden.</p>
+
+    <h2>Umsatzsteuer</h2>
+    <p>USt-IdNr.: DE332500754</p>
+
+    <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+    <p>
+      Michael Møller<br />
+      Frühlingstr. 40a<br />
+      82131 Gauting<br />
+      Deutschland
+    </p>
+
+    <h2>Haftung für Inhalte</h2>
+    <p>Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben unberührt.</p>
+
+    <h2>Haftung für Links</h2>
+    <p>Diese Website kann Links zu externen Websites Dritter enthalten. Auf deren Inhalte besteht kein Einfluss. Für fremde Inhalte wird daher keine Gewähr übernommen. Für die Inhalte verlinkter Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werden entsprechende Links entfernt.</p>
+
+    <h2>Urheberrecht</h2>
+    <p>Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung oder sonstige Nutzung außerhalb der Grenzen des Urheberrechts bedürfen der vorherigen Zustimmung des jeweiligen Rechteinhabers, soweit nicht gesetzlich erlaubt.</p>
+  </section>
 </BaseLayout>

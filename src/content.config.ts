@@ -1,6 +1,7 @@
 import { defineCollection, z } from "astro:content";
 
 const locale = z.enum(["en", "de", "da"]);
+const contentLocale = z.enum(["en", "de", "da", "all"]);
 
 const articles = defineCollection({
   type: "content",
@@ -38,7 +39,7 @@ const scripts = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    locale,
+    locale: contentLocale,
     platform: z.string(),
     riskLevel: z.enum(["Low", "Moderate", "High"]),
     lastReviewed: z.date(),
