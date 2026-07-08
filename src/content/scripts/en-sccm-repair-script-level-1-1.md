@@ -10,7 +10,7 @@ summary: |-2
 locale: en
 platform: x64
 riskLevel: Low
-lastReviewed: 2026-07-08T10:25:00.000+02:00
+lastReviewed: 2026-07-08T10:24:00.000+02:00
 prerequisites:
   - Powershell
 draft: false
