@@ -1,231 +1,340 @@
-const expertiseEn = [
-  {
-    title: "Endpoint Management & Modern Workplace",
-    items: ["Microsoft Intune and Endpoint Manager", "Windows 10 and Windows 11 deployment and management", "macOS, iOS, and Android enterprise management", "Autopilot and modern provisioning"]
-  },
-  {
-    title: "SCCM / MECM Architecture & Operations",
-    items: ["SCCM/MECM architecture, administration, distribution, reporting, and troubleshooting", "Windows deployment, imaging, PXE, task sequences, and MDT transition", "application packaging, lifecycle management, and deployment standards", "WSUS and patch-management processes"]
-  },
-  {
-    title: "Security Hardening & Operational Architecture",
-    items: ["Active Directory and Microsoft Entra ID / Azure AD", "security hardening and policy management", "NIST and ISO/IEC 27000-aligned architecture principles", "incident, change, and operational process design"]
-  },
-  {
-    title: "Cloud, Virtualisation & Enterprise Platforms",
-    items: ["Azure administration and cloud infrastructure", "VMware, Hyper-V, Citrix VDI, and application virtualisation", "ServiceNow, Remedy, Service Manager, Omnitracker, KACE, and Sysinternals"]
-  },
-  {
-    title: "Windows Deployment, Packaging & Automation",
-    items: ["PowerShell, batch, VBScript, SQL, Python, C, C#, and HTML", "application packaging from requirements through UAT", "automation for operational resilience and escalation support"]
-  },
-  {
-    title: "Applied AI & Automation",
-    items: ["local and cloud LLM workflows", "agent-based automation concepts", "computer-vision and generative-AI experimentation", "practical use of AI tooling for documentation, research, and technical automation"]
-  }
+const earlierCareer = [
+  { period: "2023", client: "UniCredit S.p.A.", role: "Senior IT Consultant" },
+  { period: "2023", client: "BTC Business Technology Consulting AG", role: "Senior IT Consultant" },
+  { period: "2021-2022", client: "AVEVA", role: "Senior SCCM / Intune Implementation Specialist; Senior End User Compute Engineer" },
+  { period: "2021", client: "Provectus Technologies GmbH", role: "Senior Modern Workplace Consultant" },
+  { period: "2019-2020", client: "UniCredit S.p.A.", role: "Senior Windows 10 ICT Specialist" },
+  { period: "2014-2019", client: "Mansoft A/S", role: "Senior Client Management Consultant" },
+  { period: "2011-2014", client: "Installers A/S", role: "Desktop Management Specialist" },
+  { period: "2006-2011", client: "Vestas", role: "Systems Administrator / Server Engineer" }
 ];
 
-const expertiseDe = [
-  {
-    title: "Endpoint Management & Modern Workplace",
-    items: ["Microsoft Intune und Endpoint Manager", "Windows 10 und Windows 11: Deployment und Management", "macOS-, iOS- und Android-Enterprise-Management", "Autopilot und moderne Bereitstellung"]
-  },
-  {
-    title: "SCCM / MECM Architektur & Betrieb",
-    items: ["SCCM/MECM-Architektur, Administration, Distribution, Reporting und Troubleshooting", "Windows Deployment, Imaging, PXE, Task Sequences und MDT-Transition", "Application Packaging, Lifecycle Management und Deployment-Standards", "WSUS und Patch-Management-Prozesse"]
-  },
-  {
-    title: "Security Hardening & Betriebsarchitektur",
-    items: ["Active Directory und Microsoft Entra ID / Azure AD", "Security Hardening und Policy Management", "NIST- und ISO/IEC-27000-orientierte Architekturprinzipien", "Incident-, Change- und Betriebsprozessdesign"]
-  },
-  {
-    title: "Cloud, Virtualisierung & Enterprise-Plattformen",
-    items: ["Azure Administration und Cloud Infrastructure", "VMware, Hyper-V, Citrix VDI und Application Virtualization", "ServiceNow, Remedy, Service Manager, Omnitracker, KACE und Sysinternals"]
-  },
-  {
-    title: "Windows Deployment, Packaging & Automatisierung",
-    items: ["PowerShell, Batch, VBScript, SQL, Python, C, C# und HTML", "Application Packaging von Anforderungen bis UAT", "Automatisierung für Betriebsstabilität und Eskalationsunterstützung"]
-  },
-  {
-    title: "Applied AI & Automation",
-    items: ["lokale und Cloud-basierte LLM-Workflows", "Konzepte für agentenbasierte Automatisierung", "Experimente mit Computer Vision und generativer KI", "praxisnaher Einsatz von KI-Tools für Dokumentation, Recherche und technische Automatisierung"]
-  }
+const education = [
+  { title: "Data Technician", place: "EUC Syd, Sønderborg", year: "2006" },
+  { title: "IT Supporter", place: "EUC Syd, Sønderborg", year: "2003" }
 ];
 
-const expertiseDa = [
-  {
-    title: "Endpoint Management & Modern Workplace",
-    items: ["Microsoft Intune og Endpoint Manager", "Windows 10 og Windows 11: deployment og management", "enterprise-management af macOS, iOS og Android", "Autopilot og moderne provisionering"]
-  },
-  {
-    title: "SCCM / MECM arkitektur & drift",
-    items: ["SCCM/MECM-arkitektur, administration, distribution, rapportering og fejlsøgning", "Windows-deployment, imaging, PXE, task sequences og MDT-transition", "applikationspakning, lifecycle management og deploymentstandarder", "WSUS og patch-management-processer"]
-  },
-  {
-    title: "Security hardening & driftsarkitektur",
-    items: ["Active Directory og Microsoft Entra ID / Azure AD", "security hardening og policy management", "NIST- og ISO/IEC-27000-orienterede arkitekturprincipper", "design af incident-, change- og driftsprocesser"]
-  },
-  {
-    title: "Cloud, virtualisering & enterprise-platforme",
-    items: ["Azure-administration og cloudinfrastruktur", "VMware, Hyper-V, Citrix VDI og application virtualisation", "ServiceNow, Remedy, Service Manager, Omnitracker, KACE og Sysinternals"]
-  },
-  {
-    title: "Windows-deployment, pakning & automatisering",
-    items: ["PowerShell, batch, VBScript, SQL, Python, C, C# og HTML", "applikationspakning fra krav til UAT", "automatisering til driftsrobusthed og eskalationssupport"]
-  },
-  {
-    title: "Applied AI & Automation",
-    items: ["lokale og cloudbaserede LLM-workflows", "koncepter for agentbaseret automatisering", "eksperimenter med computer vision og generativ AI", "praktisk brug af AI-værktøjer til dokumentation, research og teknisk automatisering"]
-  }
+const certificationsEn = [
+  "ITIL Foundation",
+  "MCSA: Windows 8",
+  "Microsoft Exam 70-698: Windows 10",
+  "Administering and Deploying System Center 2012 Configuration Manager (70-243)",
+  "Microsoft SCCM-related training"
 ];
 
-const baseEngagements = [
-  ["Senior SCCM Specialist", "Rheinmetall AG", "Independent Senior SCCM Specialist"],
-  ["Senior Modern Workplace Architect", "AS-Consulting", "Independent Senior Modern Workplace Architect"],
-  ["Senior SCCM Consultant", "AXA Konzern AG", "Independent Senior SCCM Consultant"],
-  ["Senior Cloud Infrastructure Architect / Modern Workplace Architect", "Rheinmetall AG", "Independent Senior Cloud Infrastructure Architect / Modern Workplace Architect"],
-  ["Client Solutions Manager", "Mercedes-Benz Group AG", "Client Solutions Manager"],
-  ["Senior IT Consultant", "UniCredit S.p.A.", "Senior IT Consultant"],
-  ["Senior IT Consultant", "BTC Business Technology Consulting AG", "Senior IT Consultant"],
-  ["Senior End User Compute Engineer", "AVEVA", "Senior End User Compute Engineer"],
-  ["Senior SCCM / Intune Implementation Specialist", "AVEVA", "Senior SCCM / Intune Implementation Specialist"],
-  ["Senior Modern Workplace Consultant", "Provectus Technologies GmbH", "Senior Modern Workplace Consultant"],
-  ["Senior Windows 10 ICT Specialist", "UniCredit S.p.A.", "Senior Windows 10 ICT Specialist"]
+const certificationsDe = [
+  "ITIL Foundation",
+  "MCSA: Windows 8",
+  "Microsoft Exam 70-698: Windows 10",
+  "Administering and Deploying System Center 2012 Configuration Manager (70-243)",
+  "Microsoft-Schulungen zu SCCM"
 ];
 
-const earlier = [
-  ["Senior Client Management Consultant", "Mansoft A/S", "September 2014-February 2019"],
-  ["Desktop Management Specialist", "Installers A/S", "March 2011-September 2014"],
-  ["Systems Administrator", "Vestas Wind Systems A/S", "July 2007-March 2011"],
-  ["Server Engineer", "Vestas Control Systems A/S", "September 2006-July 2007"]
+const certificationsDa = [
+  "ITIL Foundation",
+  "MCSA: Windows 8",
+  "Microsoft Exam 70-698: Windows 10",
+  "Administering and Deploying System Center 2012 Configuration Manager (70-243)",
+  "Microsoft SCCM-relateret træning"
 ];
 
-export const cv = {
-  en: {
-    locale: "en",
-    name: "Michael Møller",
-    headline: "Independent IT Consultant",
-    descriptor: "Modern Workplace · Endpoint Management · Enterprise Automation",
-    linkedin: "https://www.linkedin.com/in/mokka83/",
-    languages: "Danish, English, German; conversational Ukrainian and Russian",
-    profile: [
-      "Independent senior IT infrastructure and modern workplace consultant with more than 15 years of experience designing, operating, and modernising enterprise endpoint, deployment, and cloud environments. Strong focus on SCCM/MECM, Intune, Windows deployment, security hardening, automation, and operational architecture in large international organisations.",
-      "I work from requirements and design through implementation, pilot, user acceptance testing, operational handover, and technical escalation support. My consulting approach combines structured incident management, practical automation, clear documentation, and close collaboration with specialist teams and service providers."
-    ],
-    engagementTitle: "Selected Consulting Engagements",
-    engagementNote: "Selected independent engagements. Where delivery scopes permit, multiple mandates may be delivered concurrently under separately agreed responsibilities.",
-    engagements: [
-      {
-        title: baseEngagements[0][0], client: baseEngagements[0][1], role: baseEngagements[0][2], period: "May 2026-Present",
-        summary: "Support the continued professionalisation and expansion of Configuration Manager backend services during an IT infrastructure insourcing programme.",
-        focus: ["MECM/SCCM platform architecture and operations", "package standards, client repair, and operational automation", "backend security, maintainability, and scalable service design", "technical enablement and escalation support for Level 2 teams"],
-        technologies: ["MECM", "SCCM", "PowerShell"]
-      },
-      {
-        title: baseEngagements[1][0], client: baseEngagements[1][1], role: baseEngagements[1][2], period: "January 2026-June 2026",
-        summary: "Delivered end-to-end modern workplace solutions for customer environments, with a focus on macOS, iPhone, Android, deployment tooling, and packaging strategy.",
-        focus: ["Apple, Android, and surrounding modern workplace environments", "endpoint deployment tools and application packaging", "requirements, design, implementation, pilot, and UAT"],
-        technologies: ["macOS", "iOS", "Android", "deployment tooling"]
-      },
-      {
-        title: baseEngagements[2][0], client: baseEngagements[2][1], role: baseEngagements[2][2], period: "March 2024-Present",
-        summary: "Maintain and modernise enterprise SCCM infrastructure while delivering project-based enhancements.",
-        focus: ["SCCM/MECM backend operations and optimisation", "Windows deployment modernisation and MDT phase-out", "process improvement, automation, and operational resilience", "transition planning toward Intune and modern management"],
-        technologies: ["SCCM", "MECM", "MDT", "Intune", "PowerShell"]
-      },
-      {
-        title: baseEngagements[3][0], client: baseEngagements[3][1], role: baseEngagements[3][2], period: "July 2024-July 2025",
-        summary: "Designed and implemented robust, security-oriented cloud and endpoint-management architecture for critical infrastructure contexts.",
-        focus: ["Intune architecture, policy management, and hardening", "NIST and ISO/IEC 27000-aligned MDM architecture", "offline MECM architecture for complex manufacturing infrastructure", "security, regulatory requirements, and enterprise-scale design"],
-        technologies: ["Intune", "MECM", "NIST", "ISO/IEC 27000"]
-      },
-      {
-        title: baseEngagements[4][0], client: baseEngagements[4][1], role: baseEngagements[4][2], period: "January 2023-July 2024",
-        summary: "Delivered and drove technical solutions for R&D departments, coordinated vendors, managed reports and deliverables, and represented internal requirements.",
-        focus: ["solution delivery and vendor coordination", "ServiceNow, change management, Microsoft 365, and Intune", "stakeholder communication and technical advisory", "Windows 11 migration support"],
-        note: "Agency-employed, part-time"
-      },
-      ...baseEngagements.slice(5).map(([title, client, role]) => ({ title, client, role, period: title.includes("Windows 10") ? "February 2019-February 2020" : client === "AVEVA" && title.includes("Implementation") ? "December 2021-September 2022" : client === "AVEVA" ? "September 2022-December 2022" : client.includes("BTC") ? "January 2023-September 2023" : client.includes("Provectus") ? "January 2021-December 2021" : "January 2023-December 2023", summary: "Client-safe consulting engagement covering workplace, endpoint-management, incident, deployment, and application-management responsibilities.", focus: [] }))
-    ],
-    earlierCareer: earlier,
-    expertise: expertiseEn,
-    education: [
-      { title: "Data Technician", place: "EUC Syd, Sønderborg", year: "2006", description: "Technical education spanning hardware, networking, server and client infrastructure, programming fundamentals, Microsoft and Linux environments, and practical systems integration." },
-      { title: "IT Supporter", place: "EUC Syd, Sønderborg", year: "2003", description: "" }
-    ],
-    certifications: ["ITIL Foundation", "MCSA: Windows 8", "Microsoft Exam 70-698: Windows 10", "Microsoft Certified: Azure Administrator Associate - certification status to be confirmed before public launch", "Administering and Deploying System Center 2012 Configuration Manager (70-243)", "Microsoft SCCM-related training"],
-    availability: "I support clients through defined delivery scopes, long-term consulting engagements, architecture work, and targeted technical escalations. Availability for new assignments is assessed individually based on scope, urgency, and delivery requirements."
+const cvEn = {
+  locale: "en",
+  name: "Michael Møller",
+  headline: "Independent IT Consultant",
+  descriptor: "Modern Workplace · Endpoint Management · Enterprise Automation",
+  linkedin: "https://www.linkedin.com/in/mokka83/",
+  labels: {
+    cv: "Consultant CV",
+    profile: "Profile",
+    selectedEngagements: "Selected Consulting Engagements",
+    earlierExperience: "Earlier Consulting Experience",
+    expertise: "Expertise",
+    certifications: "Certifications & Training",
+    education: "Education",
+    languages: "Languages",
+    secondaryCapabilities: "Secondary Capabilities"
   },
+  engagementTitle: "Selected Consulting Engagements",
+  engagementNote: "Selected independent engagements, with current mandates shown without published contract end dates.",
+  availability: "I support clients through defined delivery scopes, long-term consulting engagements, architecture work, and targeted technical escalations.",
+  languages: "Danish, English, German; conversational Ukrainian and Russian",
+  profile: [
+    "Senior independent consultant for enterprise endpoint platforms, workplace modernisation, and automation.",
+    "Trusted in complex SCCM/MECM, Intune, Windows deployment, and security-hardening environments.",
+    "Bridges architecture, hands-on implementation, operational handover, and technical escalation support."
+  ],
+  engagements: [
+    {
+      title: "Senior SCCM Specialist",
+      client: "Rheinmetall AG",
+      period: "May 2026-Present",
+      summary: "Senior specialist support for Configuration Manager backend services during an IT infrastructure insourcing programme.",
+      focus: [
+        "Strengthen MECM/SCCM architecture, operations, and maintainability.",
+        "Improve package standards, client repair patterns, and operational automation.",
+        "Enable Level 2 teams through escalation support and practical technical guidance."
+      ]
+    },
+    {
+      title: "Senior SCCM Consultant",
+      client: "AXA Konzern AG",
+      period: "March 2024-Present",
+      summary: "Long-running senior consulting mandate for enterprise SCCM operations and workplace modernisation.",
+      focus: [
+        "Maintain and optimise SCCM/MECM backend services in an enterprise environment.",
+        "Support Windows deployment modernisation and transition planning away from MDT.",
+        "Drive process improvement, automation, resilience, and Intune transition topics."
+      ]
+    },
+    {
+      title: "Senior Modern Workplace Architect",
+      client: "AS-Consulting",
+      period: "January 2026-June 2026",
+      summary: "Architecture and delivery support for customer modern workplace environments.",
+      focus: [
+        "Design endpoint approaches across macOS, iPhone, Android, and surrounding tooling.",
+        "Shape deployment, application-packaging, pilot, and UAT activities.",
+        "Translate customer requirements into implementable workplace solutions."
+      ]
+    },
+    {
+      title: "Cloud Infrastructure / Modern Workplace Architect",
+      client: "Rheinmetall AG",
+      period: "July 2024-July 2025",
+      summary: "Security-oriented architecture work for cloud and endpoint-management services in critical infrastructure contexts.",
+      focus: [
+        "Design Intune architecture, policy management, and endpoint hardening.",
+        "Apply NIST and ISO/IEC 27000-aligned principles to MDM architecture.",
+        "Plan offline MECM architecture for complex manufacturing infrastructure."
+      ]
+    },
+    {
+      title: "Client Solutions Manager",
+      client: "Mercedes-Benz Group AG",
+      period: "January 2023-July 2024",
+      summary: "Solution delivery and coordination role supporting research and development departments.",
+      focus: [
+        "Coordinate vendors, reports, deliverables, and internal technical requirements.",
+        "Support ServiceNow, change management, Microsoft 365, Intune, and Windows 11 migration topics.",
+        "Represent stakeholder needs in technical advisory and delivery conversations."
+      ],
+      note: "Agency-employed, part-time"
+    }
+  ],
+  earlierCareer,
+  expertise: [
+    { title: "Endpoint & Workplace", items: ["Microsoft Intune / Endpoint Manager", "Windows 10 / 11 deployment", "Autopilot and modern provisioning", "macOS, iOS, and Android management"] },
+    { title: "SCCM / MECM", items: ["Architecture and operations", "Distribution, reporting, and troubleshooting", "PXE, task sequences, and imaging", "WSUS and patch processes"] },
+    { title: "Security & Operations", items: ["Active Directory and Microsoft Entra ID", "Endpoint hardening and policy design", "NIST / ISO 27000-aligned principles", "Incident, change, and handover processes"] },
+    { title: "Automation & Platforms", items: ["PowerShell, SQL, Python, C#, batch, VBScript", "Application packaging and lifecycle", "Azure administration", "VMware, Hyper-V, Citrix VDI"] },
+    { title: "Applied AI", items: ["Small-scale AI-assisted documentation, research, and technical automation"] }
+  ],
+  education,
+  certifications: certificationsEn
+};
+
+const translations = {
   de: {
     locale: "de",
-    name: "Michael Møller",
     headline: "Freiberuflicher IT-Consultant",
-    descriptor: "Modern Workplace · Endpoint Management · Enterprise Automation",
-    linkedin: "https://www.linkedin.com/in/mokka83/",
+    labels: {
+      cv: "Consultant CV",
+      profile: "Profil",
+      selectedEngagements: "Ausgewählte Beratungsmandate",
+      earlierExperience: "Frühere Beratungserfahrung",
+      expertise: "Expertise",
+      certifications: "Zertifizierungen & Training",
+      education: "Ausbildung",
+      languages: "Sprachen",
+      secondaryCapabilities: "Weitere Fähigkeiten"
+    },
+    engagementTitle: "Ausgewählte Beratungsmandate",
+    engagementNote: "Ausgewählte freiberufliche Beratungsmandate; aktuelle Mandate werden ohne veröffentlichte Vertragsenddaten dargestellt.",
+    availability: "Ich unterstütze Kunden im Rahmen klar definierter Leistungsumfänge, langfristiger Beratungsmandate, Architekturarbeit und gezielter technischer Eskalationen.",
     languages: "Dänisch, Englisch, Deutsch; Ukrainisch und Russisch auf Konversationsniveau",
     profile: [
-      "Freiberuflicher Senior Consultant für IT-Infrastruktur und Modern Workplace mit über 15 Jahren Erfahrung in der Konzeption, dem Betrieb und der Modernisierung von Enterprise-Umgebungen für Endgeräte, Deployment und Cloud.",
-      "Ich begleite Vorhaben von Anforderung und Design über Implementierung, Pilotierung und UAT bis hin zu Betriebsübergabe und technischer Eskalationsunterstützung."
+      "Freiberuflicher Senior Consultant für Enterprise-Endpoint-Plattformen, Workplace-Modernisierung und Automatisierung.",
+      "Erfahren in komplexen SCCM/MECM-, Intune-, Windows-Deployment- und Security-Hardening-Umgebungen.",
+      "Verbindet Architektur, praktische Umsetzung, Betriebsübergabe und technische Eskalationsunterstützung."
     ],
-    engagementTitle: "Ausgewählte Beratungsmandate",
-    engagementNote: "Ausgewählte freiberufliche Beratungsmandate. Sofern die Leistungsumfänge dies zulassen, können mehrere Mandate parallel innerhalb separat vereinbarter Verantwortlichkeiten erbracht werden.",
-    engagements: [],
-    earlierCareer: earlier,
-    expertise: expertiseDe,
-    education: [
-      { title: "Data Technician", place: "EUC Syd, Sønderborg", year: "2006", description: "Technische Ausbildung mit Hardware, Netzwerken, Server- und Client-Infrastruktur, Programmiergrundlagen, Microsoft- und Linux-Umgebungen sowie praxisorientierter Systemintegration." },
-      { title: "IT Supporter", place: "EUC Syd, Sønderborg", year: "2003", description: "" }
+    engagements: [
+      {
+        title: "Senior SCCM Specialist",
+        client: "Rheinmetall AG",
+        period: "Mai 2026-Heute",
+        summary: "Senior-Spezialistenunterstützung für Configuration-Manager-Backend-Services im Rahmen eines IT-Infrastruktur-Insourcings.",
+        focus: [
+          "Stärkung von MECM/SCCM-Architektur, Betrieb und Wartbarkeit.",
+          "Verbesserung von Paketstandards, Client-Reparaturmustern und betrieblicher Automatisierung.",
+          "Enablement von Level-2-Teams durch Eskalationssupport und praxisnahe technische Anleitung."
+        ]
+      },
+      {
+        title: "Senior SCCM Consultant",
+        client: "AXA Konzern AG",
+        period: "März 2024-Heute",
+        summary: "Langfristiges Senior-Consulting-Mandat für Enterprise-SCCM-Betrieb und Workplace-Modernisierung.",
+        focus: [
+          "Betrieb und Optimierung von SCCM/MECM-Backend-Services in einer Enterprise-Umgebung.",
+          "Unterstützung bei Windows-Deployment-Modernisierung und Ablöseplanung für MDT.",
+          "Vorantreiben von Prozessverbesserung, Automatisierung, Resilienz und Intune-Transition-Themen."
+        ]
+      },
+      {
+        title: "Senior Modern Workplace Architect",
+        client: "AS-Consulting",
+        period: "Januar 2026-Juni 2026",
+        summary: "Architektur- und Lieferunterstützung für Modern-Workplace-Umgebungen von Kunden.",
+        focus: [
+          "Entwurf von Endpoint-Ansätzen für macOS, iPhone, Android und angrenzende Werkzeuge.",
+          "Strukturierung von Deployment, Application Packaging, Pilotierung und UAT.",
+          "Übersetzung von Kundenanforderungen in umsetzbare Workplace-Lösungen."
+        ]
+      },
+      {
+        title: "Cloud Infrastructure / Modern Workplace Architect",
+        client: "Rheinmetall AG",
+        period: "Juli 2024-Juli 2025",
+        summary: "Sicherheitsorientierte Architekturarbeit für Cloud- und Endpoint-Management-Services in kritischen Infrastrukturszenarien.",
+        focus: [
+          "Design von Intune-Architektur, Policy Management und Endpoint Hardening.",
+          "Anwendung NIST- und ISO/IEC-27000-orientierter Prinzipien auf MDM-Architektur.",
+          "Planung einer Offline-MECM-Architektur für komplexe Fertigungsinfrastruktur."
+        ]
+      },
+      {
+        title: "Client Solutions Manager",
+        client: "Mercedes-Benz Group AG",
+        period: "Januar 2023-Juli 2024",
+        summary: "Solution Delivery und Koordination zur Unterstützung von Forschungs- und Entwicklungsbereichen.",
+        focus: [
+          "Koordination von Dienstleistern, Reports, Deliverables und internen technischen Anforderungen.",
+          "Unterstützung bei ServiceNow, Change Management, Microsoft 365, Intune und Windows-11-Migration.",
+          "Vertretung von Stakeholder-Anforderungen in technischen Beratungs- und Liefergesprächen."
+        ],
+        note: "Agenturangestellt, Teilzeit"
+      }
     ],
-    certifications: ["ITIL Foundation", "MCSA: Windows 8", "Microsoft Exam 70-698: Windows 10", "Microsoft Certified: Azure Administrator Associate - Status vor Veröffentlichung bestätigen", "Administering and Deploying System Center 2012 Configuration Manager (70-243)", "Microsoft-Schulungen zu SCCM"],
-    availability: "Ich unterstütze Kunden im Rahmen klar definierter Leistungsumfänge, langfristiger Beratungsmandate, Architekturarbeit und gezielter technischer Eskalationen. Die Verfügbarkeit für neue Mandate wird individuell anhand von Umfang, Dringlichkeit und Lieferanforderungen beurteilt."
+    earlierCareer,
+    expertise: [
+      { title: "Endpoint & Workplace", items: ["Microsoft Intune / Endpoint Manager", "Windows 10 / 11 Deployment", "Autopilot und moderne Bereitstellung", "macOS-, iOS- und Android-Management"] },
+      { title: "SCCM / MECM", items: ["Architektur und Betrieb", "Distribution, Reporting und Troubleshooting", "PXE, Task Sequences und Imaging", "WSUS- und Patch-Prozesse"] },
+      { title: "Security & Operations", items: ["Active Directory und Microsoft Entra ID", "Endpoint Hardening und Policy Design", "NIST- / ISO-27000-orientierte Prinzipien", "Incident-, Change- und Übergabeprozesse"] },
+      { title: "Automation & Plattformen", items: ["PowerShell, SQL, Python, C#, Batch, VBScript", "Application Packaging und Lifecycle", "Azure Administration", "VMware, Hyper-V, Citrix VDI"] },
+      { title: "Applied AI", items: ["Gezielte KI-gestützte Dokumentation, Recherche und technische Automatisierung"] }
+    ],
+    education,
+    certifications: certificationsDe
   },
   da: {
     locale: "da",
-    name: "Michael Møller",
     headline: "Selvstændig IT-konsulent",
-    descriptor: "Modern Workplace · Endpoint Management · Enterprise Automation",
-    linkedin: "https://www.linkedin.com/in/mokka83/",
-    languages: "dansk, engelsk og tysk; ukrainsk og russisk på samtaleniveau",
-    profile: [
-      "Selvstændig senior IT-infrastruktur- og Modern Workplace-konsulent med mere end 15 års erfaring i at designe, drifte og modernisere enterprise-miljøer for endpoints, deployment og cloud.",
-      "Jeg følger opgaver fra krav og design gennem implementering, pilot, UAT og driftsleverance til teknisk eskalationssupport."
-    ],
+    labels: {
+      cv: "Konsulent-CV",
+      profile: "Profil",
+      selectedEngagements: "Udvalgte konsulentopgaver",
+      earlierExperience: "Tidligere konsulenterfaring",
+      expertise: "Ekspertise",
+      certifications: "Certificeringer & træning",
+      education: "Uddannelse",
+      languages: "Sprog",
+      secondaryCapabilities: "Sekundære kompetencer"
+    },
     engagementTitle: "Udvalgte konsulentopgaver",
-    engagementNote: "Udvalgte selvstændige konsulentopgaver. Når leveranceomfanget tillader det, kan flere opgaver gennemføres parallelt inden for særskilt aftalte ansvarsområder.",
-    engagements: [],
-    earlierCareer: earlier,
-    expertise: expertiseDa,
-    education: [
-      { title: "Data Technician", place: "EUC Syd, Sønderborg", year: "2006", description: "Teknisk uddannelse inden for hardware, netværk, server- og klientinfrastruktur, programmeringsgrundlag, Microsoft- og Linux-miljøer samt praktisk systemintegration." },
-      { title: "IT Supporter", place: "EUC Syd, Sønderborg", year: "2003", description: "" }
+    engagementNote: "Udvalgte selvstændige konsulentopgaver; aktuelle opgaver vises uden offentliggjorte kontraktslutdatoer.",
+    availability: "Jeg understøtter kunder gennem klart definerede leveranceomfang, længerevarende konsulentopgaver, arkitekturarbejde og målrettede tekniske eskalationer.",
+    languages: "Dansk, engelsk og tysk; ukrainsk og russisk på samtaleniveau",
+    profile: [
+      "Selvstændig seniorkonsulent inden for enterprise endpoint-platforme, workplace-modernisering og automatisering.",
+      "Erfaren i komplekse SCCM/MECM-, Intune-, Windows-deployment- og security-hardening-miljøer.",
+      "Forbinder arkitektur, praktisk implementering, driftsoverdragelse og teknisk eskalationssupport."
     ],
-    certifications: ["ITIL Foundation", "MCSA: Windows 8", "Microsoft Exam 70-698: Windows 10", "Microsoft Certified: Azure Administrator Associate - certificeringsstatus skal bekræftes før offentliggørelse", "Administering and Deploying System Center 2012 Configuration Manager (70-243)", "Microsoft SCCM-relateret træning"],
-    availability: "Jeg understøtter kunder gennem klart definerede leveranceomfang, længerevarende konsulentopgaver, arkitekturarbejde og målrettede tekniske eskalationer. Kapacitet til nye opgaver vurderes individuelt ud fra omfang, hast og leverancekrav."
+    engagements: [
+      {
+        title: "Senior SCCM Specialist",
+        client: "Rheinmetall AG",
+        period: "Maj 2026-Nu",
+        summary: "Seniorspecialist-support til Configuration Manager-backendtjenester under et IT-infrastruktur-insourcingprogram.",
+        focus: [
+          "Styrke MECM/SCCM-arkitektur, drift og vedligeholdbarhed.",
+          "Forbedre pakkestandarder, client-repair-mønstre og driftsautomatisering.",
+          "Understøtte Level 2-teams med eskalationssupport og praktisk teknisk sparring."
+        ]
+      },
+      {
+        title: "Senior SCCM Consultant",
+        client: "AXA Konzern AG",
+        period: "Marts 2024-Nu",
+        summary: "Længerevarende seniorkonsulentopgave inden for enterprise-SCCM-drift og workplace-modernisering.",
+        focus: [
+          "Vedligeholde og optimere SCCM/MECM-backendtjenester i et enterprise-miljø.",
+          "Understøtte modernisering af Windows-deployment og transition væk fra MDT.",
+          "Drive procesforbedring, automatisering, robusthed og Intune-transition-emner."
+        ]
+      },
+      {
+        title: "Senior Modern Workplace Architect",
+        client: "AS-Consulting",
+        period: "Januar 2026-Juni 2026",
+        summary: "Arkitektur- og leverancesupport til kunders Modern Workplace-miljøer.",
+        focus: [
+          "Designe endpoint-tilgange på tværs af macOS, iPhone, Android og relaterede værktøjer.",
+          "Forme deployment, applikationspakning, pilot og UAT-aktiviteter.",
+          "Omsætte kundekrav til implementerbare workplace-løsninger."
+        ]
+      },
+      {
+        title: "Cloud Infrastructure / Modern Workplace Architect",
+        client: "Rheinmetall AG",
+        period: "Juli 2024-Juli 2025",
+        summary: "Sikkerhedsorienteret arkitekturarbejde for cloud- og endpoint-management-services i kritiske infrastrukturscenarier.",
+        focus: [
+          "Designe Intune-arkitektur, policy management og endpoint hardening.",
+          "Anvende NIST- og ISO/IEC-27000-orienterede principper i MDM-arkitektur.",
+          "Planlægge offline MECM-arkitektur til kompleks produktionsinfrastruktur."
+        ]
+      },
+      {
+        title: "Client Solutions Manager",
+        client: "Mercedes-Benz Group AG",
+        period: "Januar 2023-Juli 2024",
+        summary: "Løsningsleverance og koordinering til støtte for forsknings- og udviklingsafdelinger.",
+        focus: [
+          "Koordinere leverandører, rapporter, leverancer og interne tekniske krav.",
+          "Understøtte ServiceNow, change management, Microsoft 365, Intune og Windows 11-migration.",
+          "Repræsentere stakeholderbehov i tekniske rådgivnings- og leverancedialoger."
+        ],
+        note: "Ansat via bureau, deltid"
+      }
+    ],
+    earlierCareer,
+    expertise: [
+      { title: "Endpoint & Workplace", items: ["Microsoft Intune / Endpoint Manager", "Windows 10 / 11 deployment", "Autopilot og moderne provisionering", "macOS-, iOS- og Android-management"] },
+      { title: "SCCM / MECM", items: ["Arkitektur og drift", "Distribution, rapportering og fejlsøgning", "PXE, task sequences og imaging", "WSUS- og patch-processer"] },
+      { title: "Security & Operations", items: ["Active Directory og Microsoft Entra ID", "Endpoint hardening og policy-design", "NIST- / ISO-27000-orienterede principper", "Incident-, change- og overdragelsesprocesser"] },
+      { title: "Automation & Platforme", items: ["PowerShell, SQL, Python, C#, batch, VBScript", "Applikationspakning og lifecycle", "Azure-administration", "VMware, Hyper-V, Citrix VDI"] },
+      { title: "Applied AI", items: ["Afgrænset AI-understøttet dokumentation, research og teknisk automatisering"] }
+    ],
+    education,
+    certifications: certificationsDa
   }
 };
 
-cv.de.engagements = cv.en.engagements.map((item, index) => ({
-  ...item,
-  period: ["Mai 2026-Heute", "Januar 2026-Juni 2026", "März 2024-Heute", "Juli 2024-Juli 2025", "Januar 2023-Juli 2024"][index] || item.period,
-  summary: index < 5 ? [
-    "Unterstützung bei der weiteren Professionalisierung und Skalierung von Configuration-Manager-Backend-Services im Rahmen eines IT-Infrastruktur-Insourcings.",
-    "Umsetzung von End-to-End-Modern-Workplace-Lösungen in Kundenumgebungen mit Fokus auf macOS, iPhone, Android, Deployment-Tools und Packaging-Strategien.",
-    "Betrieb und Modernisierung einer Enterprise-SCCM-Infrastruktur sowie Umsetzung projektbasierter Erweiterungen.",
-    "Konzeption und Umsetzung robuster, sicherheitsorientierter Cloud- und Endpoint-Management-Architekturen für kritische Infrastrukturszenarien.",
-    "Technische Lösungsumsetzung für F&E-Bereiche, Koordination von Dienstleistern, Steuerung von Reports und Deliverables."
-  ][index] : "Client-sichere Beratungsbeschreibung zu Workplace, Endpoint Management, Incident, Deployment und Application Management.",
-  focus: index < 5 ? item.focus : []
-}));
-
-cv.da.engagements = cv.en.engagements.map((item, index) => ({
-  ...item,
-  period: ["Maj 2026-Nu", "Januar 2026-Juni 2026", "Marts 2024-Nu", "Juli 2024-Juli 2025", "Januar 2023-Juli 2024"][index] || item.period,
-  summary: index < 5 ? [
-    "Bidrager til den fortsatte professionalisering og udbygning af Configuration Manager-backendtjenester under et IT-infrastruktur-insourcingprogram.",
-    "Leverede end-to-end Modern Workplace-løsninger i kundemiljøer med fokus på macOS, iPhone, Android, deploymentværktøjer og pakkestrategi.",
-    "Drift og modernisering af enterprise-SCCM-infrastruktur samt levering af projektbaserede forbedringer.",
-    "Designede og implementerede robuste, sikkerhedsorienterede cloud- og endpoint-management-arkitekturer til kritiske infrastrukturscenarier.",
-    "Leverede og drev tekniske løsninger for R&D-afdelinger, koordinerede leverandører, håndterede rapporter og leverancer."
-  ][index] : "Kundesikker konsulentbeskrivelse inden for workplace, endpoint management, incidents, deployment og application management.",
-  focus: index < 5 ? item.focus : []
-}));
+export const cv = {
+  en: cvEn,
+  de: {
+    ...cvEn,
+    ...translations.de,
+    descriptor: cvEn.descriptor,
+    name: cvEn.name,
+    linkedin: cvEn.linkedin
+  },
+  da: {
+    ...cvEn,
+    ...translations.da,
+    descriptor: cvEn.descriptor,
+    name: cvEn.name,
+    linkedin: cvEn.linkedin
+  }
+};
