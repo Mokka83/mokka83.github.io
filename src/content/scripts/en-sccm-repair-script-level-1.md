@@ -1,12 +1,11 @@
 ---
-title: SCCM Repair script level 1
+title: SCCM Repair script level 2
 summary: |-2
-     - Light repair
-     - Runs `ccmrepair.exe`
-     - Restarts `CcmExec`
-     - Runs client health evaluation
-     - Triggers machine policy retrieval/evaluation
-     - Does not reset WMI or reinstall the client
+     - Controlled reinstall
+     - Supports explicit uninstall/reinstall or `/forceinstall`
+     - Requires `-SiteCode` and `-ManagementPoint`
+     - Optional FSP and PKI parameters
+     - Does not reset WMI or perform MOF repair
 locale: en
 platform: Win10/Win11
 riskLevel: Low
@@ -19,13 +18,13 @@ draft: false
 
 .SYNOPSIS
 
-\    SCCM / MECM Client Repair - Level 1
+\    SCCM / MECM Client Repair - Level 2
 
 
 
 .DESCRIPTION
 
-\    Light repair script for an installed Configuration Manager client.
+\    Controlled reinstall script for the Configuration Manager client.
 
 
 
@@ -33,43 +32,103 @@ draft: false
 
 \- Validates elevated/admin execution
 
-\- Creates a detailed log
+\- Optionally runs ccmrepair.exe first
 
-\- Checks Winmgmt and CcmExec service state
+\- Uninstalls the existing client using ccmsetup.exe /uninstall
 
-\- Runs ccmrepair.exe
+\- Waits for uninstall activity to finish
 
-\- Restarts CcmExec
+\- Optionally reboots if requested and required
 
-\- Runs Configuration Manager Health Evaluation
+\- Reinstalls the client using ccmsetup.exe with site-specific properties
 
-\- Triggers Machine Policy retrieval/evaluation when possible
+\- Validates CcmExec and root\ccm:SMS_Client
 
-\- Validates root\ccm and SMS_Client availability
+\- Triggers Machine Policy retrieval/evaluation
+
+
+
+.PARAMETER SiteCode
+
+\    ConfigMgr site code, for example P01.
+
+
+
+.PARAMETER ManagementPoint
+
+\    Management point FQDN or URL.
+
+\    Examples:
+
+\    mp01.contoso.com
+
+\    https://mp01.contoso.com
+
+
+
+.PARAMETER ClientSource
+
+\    Folder containing ccmsetup.exe.
+
+\    Example:
+
+\    \\CM01.contoso.com\SMS_P01\Client
+
+
+
+.PARAMETER FallbackStatusPoint
+
+\    Optional fallback status point FQDN.
+
+
+
+.PARAMETER UsePKICert
+
+\    Adds /UsePKICert to ccmsetup.exe.
+
+
+
+.PARAMETER InstallationProperties
+
+\    Additional raw client installation properties.
+
+\    Example:
+
+\    @("DNSSUFFIX=contoso.com","CCMLOGMAXSIZE=5242880")
+
+
+
+.PARAMETER ReinstallMode
+
+\    UninstallReinstall = explicit uninstall first, then install.
+
+\    ForceInstall      = use ccmsetup.exe /forceinstall.
 
 
 
 .EXIT CODES
 
-\    0     Repair completed and basic validation passed
+\    0     Reinstall completed and basic validation passed
 
-\    1     Repair ran but validation failed
+\    1     Reinstall ran but validation failed
 
-\    2     ccmrepair.exe not found
+\    2     Missing ccmsetup.exe
 
 \    3     Not running elevated/admin
 
-\    3010  Repair completed, reboot recommended
+\    4     Required parameter missing
+
+\    3010  Reinstall completed, reboot recommended
 
 
 
 .NOTES
 
-\    Intended to be safe for normal enterprise use.
-
 \    Does not reset WMI.
 
-\    Does not uninstall/reinstall the client.
+\    Does not perform MOF repair.
+
+\    Use Level 3 for WMI/MOF repair.
 
 \#>
 
@@ -79,19 +138,55 @@ draft: false
 
 param(
 
+\    \[Parameter(Mandatory = $true)]
+
+\    \[ValidatePattern("^[A-Za-z0-9]{3}$")]
+
+\    \[string]$SiteCode,
+
+
+
+\    \[Parameter(Mandatory = $true)]
+
+\    \[string]$ManagementPoint,
+
+
+
+\    \[string]$ClientSource,
+
+
+
+\    \[string]$FallbackStatusPoint,
+
+
+
+\    \[switch]$UsePKICert,
+
+
+
+\    \[string[]]$InstallationProperties = @(),
+
+
+
+\    \[ValidateSet("UninstallReinstall","ForceInstall")]
+
+\    \[string]$ReinstallMode = "UninstallReinstall",
+
+
+
 \    \[string]$LogRoot = "$env:windir\Temp\ConfigMgrClientRepair",
 
 
 
-\    \[int]$RepairTimeoutMinutes = 60,
+\    \[int]$UninstallTimeoutMinutes = 45,
 
 
 
-\    \[switch]$SkipHealthEvaluation,
+\    \[int]$InstallTimeoutMinutes = 90,
 
 
 
-\    \[switch]$SkipPolicyTrigger
+\    \[switch]$RunCcmRepairFirst
 
 )
 
@@ -121,7 +216,7 @@ function New-Log {
 
 \    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 
-\    $Script:LogFile = Join-Path $LogRoot "Repair-ConfigMgrClient-Level1-$timestamp.log"
+\    $Script:LogFile = Join-Path $LogRoot "Repair-ConfigMgrClient-Level2-$timestamp.log"
 
 \    New-Item -Path $Script:LogFile -ItemType File -Force | Out-Null
 
@@ -237,45 +332,129 @@ function Invoke-LoggedProcess {
 
 
 
-function Restart-CcmExecService {
+function Get-LocalCcmSetupPath {
 
-\    $service = Get-Service -Name CcmExec -ErrorAction SilentlyContinue
+\    $candidate = Join-Path $env:windir "CCMSetup\ccmsetup.exe"
 
-\    if (-not $service) {
+\    if (Test-Path $candidate) {
 
-\    Write-Log "CcmExec service not found." "WARN"
-
-\    return $false
+\    return $candidate
 
 \    }
 
 
 
-\    try {
+\    $candidate = Join-Path $env:windir "CCM\ccmsetup.exe"
 
-\    Write-Log "Restarting CcmExec service."
+\    if (Test-Path $candidate) {
 
-\    Stop-Service -Name CcmExec -Force -ErrorAction SilentlyContinue
+\    return $candidate
 
-\    Start-Sleep -Seconds 5
-
-\    Start-Service -Name CcmExec -ErrorAction Stop
+\    }
 
 
 
-\    $service.WaitForStatus("Running", "00:02:00")
+\    return $null
 
-\    Write-Log "CcmExec service is running." "SUCCESS"
+}
+
+
+
+function Get-InstallCcmSetupPath {
+
+\    if ($ClientSource) {
+
+\    $candidate = Join-Path $ClientSource "ccmsetup.exe"
+
+\    if (Test-Path $candidate) {
+
+\    return $candidate
+
+\    }
+
+
+
+\    Write-Log "ClientSource was provided but ccmsetup.exe was not found: $candidate" "ERROR"
+
+\    return $null
+
+\    }
+
+
+
+\    $local = Get-LocalCcmSetupPath
+
+\    if ($local) {
+
+\    return $local
+
+\    }
+
+
+
+\    Write-Log "No ClientSource provided and no local ccmsetup.exe found." "ERROR"
+
+\    return $null
+
+}
+
+
+
+function Wait-ForCcmSetupToFinish {
+
+\    param(\[int]$TimeoutMinutes = 45)
+
+
+
+\    $deadline = (Get-Date).AddMinutes($TimeoutMinutes)
+
+\    do {
+
+\    $running = Get-Process -Name ccmsetup -ErrorAction SilentlyContinue
+
+\    if (-not $running) {
+
+\    Write-Log "No running ccmsetup.exe process found."
 
 \    return $true
 
 \    }
 
-\    catch {
 
-\    Write-Log "Failed to restart CcmExec. Error: $($_.Exception.Message)" "ERROR"
+
+\    Write-Log "Waiting for ccmsetup.exe to finish. PID(s): $($running.Id -join ', ')"
+
+\    Start-Sleep -Seconds 15
+
+\    }
+
+\    while ((Get-Date) -lt $deadline)
+
+
+
+\    Write-Log "Timeout waiting for ccmsetup.exe to finish." "ERROR"
 
 \    return $false
+
+}
+
+
+
+function Invoke-OptionalCcmRepair {
+
+\    $ccmRepair = Join-Path $env:windir "CCM\ccmrepair.exe"
+
+\    if (Test-Path $ccmRepair) {
+
+\    Write-Log "Running ccmrepair.exe before Level 2 reinstall because -RunCcmRepairFirst was specified."
+
+\    \[void](Invoke-LoggedProcess -FilePath $ccmRepair -TimeoutMinutes 60)
+
+\    }
+
+\    else {
+
+\    Write-Log "ccmrepair.exe not found. Skipping pre-reinstall repair." "WARN"
 
 \    }
 
@@ -283,29 +462,75 @@ function Restart-CcmExecService {
 
 
 
-function Invoke-ClientHealthEvaluation {
+function Build-CcmSetupArguments {
 
-\    $taskName = "\Microsoft\Configuration Manager\Configuration Manager Health Evaluation"
-
-
-
-\    Write-Log "Attempting to run client health evaluation scheduled task."
-
-\    $result = & schtasks.exe /Run /TN $taskName 2>&1
-
-\    Write-Log "schtasks output: $result"
+\    param(\[switch]$ForceInstall)
 
 
 
-\    $ccmEval = Join-Path $env:windir "CCM\ccmeval.exe"
+\    $args = New-Object System.Collections.Generic.List\[string]
 
-\    if (Test-Path $ccmEval) {
 
-\    Write-Log "Also running ccmeval.exe directly."
 
-\    \[void](Invoke-LoggedProcess -FilePath $ccmEval -TimeoutMinutes 30)
+\    if ($ForceInstall) {
+
+\    $args.Add("/forceinstall")
 
 \    }
+
+
+
+\    if ($UsePKICert) {
+
+\    $args.Add("/UsePKICert")
+
+\    }
+
+
+
+\    if ($ManagementPoint -match "^https?://") {
+
+\    $args.Add("/mp:$ManagementPoint")
+
+\    $args.Add("SMSMP=$ManagementPoint")
+
+\    }
+
+\    else {
+
+\    $args.Add("/mp:$ManagementPoint")
+
+\    $args.Add("SMSMP=$ManagementPoint")
+
+\    }
+
+
+
+\    $args.Add("SMSSITECODE=$SiteCode")
+
+
+
+\    if ($FallbackStatusPoint) {
+
+\    $args.Add("FSP=$FallbackStatusPoint")
+
+\    }
+
+
+
+\    foreach ($prop in $InstallationProperties) {
+
+\    if (-not \[string]::IsNullOrWhiteSpace($prop)) {
+
+\    $args.Add($prop)
+
+\    }
+
+\    }
+
+
+
+\    return $args.ToArray()
 
 }
 
@@ -319,8 +544,6 @@ function Invoke-PolicyTrigger {
 
 
 
-\# Machine Policy Retrieval & Evaluation Cycle
-
 \    Invoke-CimMethod -InputObject $smsClient -MethodName TriggerSchedule -Arguments @{
 
 \    sScheduleID = "{00000000-0000-0000-0000-000000000021}"
@@ -328,8 +551,6 @@ function Invoke-PolicyTrigger {
 \    } -ErrorAction Stop | Out-Null
 
 
-
-\# Machine Policy Evaluation Cycle
 
 \    Invoke-CimMethod -InputObject $smsClient -MethodName TriggerSchedule -Arguments @{
 
@@ -360,48 +581,6 @@ function Invoke-PolicyTrigger {
 function Test-ConfigMgrClientBasicHealth {
 
 \    $ok = $true
-
-
-
-\    $winmgmt = Get-Service -Name Winmgmt -ErrorAction SilentlyContinue
-
-\    if (-not $winmgmt) {
-
-\    Write-Log "Winmgmt service not found." "ERROR"
-
-\    $ok = $false
-
-\    }
-
-\    elseif ($winmgmt.Status -ne "Running") {
-
-\    Write-Log "Winmgmt service is not running. Current state: $($winmgmt.Status)" "WARN"
-
-\    try {
-
-\    Start-Service -Name Winmgmt -ErrorAction Stop
-
-\    $winmgmt.WaitForStatus("Running", "00:01:00")
-
-\    Write-Log "Winmgmt started successfully." "SUCCESS"
-
-\    }
-
-\    catch {
-
-\    Write-Log "Failed to start Winmgmt. Error: $($_.Exception.Message)" "ERROR"
-
-\    $ok = $false
-
-\    }
-
-\    }
-
-\    else {
-
-\    Write-Log "Winmgmt service is running." "SUCCESS"
-
-\    }
 
 
 
@@ -475,9 +654,15 @@ function Test-ConfigMgrClientBasicHealth {
 
 New-Log
 
-Write-Log "========== SCCM Client Repair - Level 1 started =========="
+Write-Log "========== SCCM Client Repair - Level 2 started =========="
 
 Write-Log "Log file: $Script:LogFile"
+
+Write-Log "SiteCode: $SiteCode"
+
+Write-Log "ManagementPoint: $ManagementPoint"
+
+Write-Log "ReinstallMode: $ReinstallMode"
 
 
 
@@ -491,11 +676,27 @@ if (-not (Test-IsAdmin)) {
 
 
 
-$ccmRepair = Join-Path $env:windir "CCM\ccmrepair.exe"
+if (\[string]::IsNullOrWhiteSpace($SiteCode) -or \[string]::IsNullOrWhiteSpace($ManagementPoint)) {
 
-if (-not (Test-Path $ccmRepair)) {
+\    Write-Log "SiteCode and ManagementPoint are required." "ERROR"
 
-\    Write-Log "ccmrepair.exe not found at expected path: $ccmRepair" "ERROR"
+\    exit 4
+
+}
+
+
+
+if ($RunCcmRepairFirst) {
+
+\    Invoke-OptionalCcmRepair
+
+}
+
+
+
+$installCcmSetup = Get-InstallCcmSetupPath
+
+if (-not $installCcmSetup) {
 
 \    exit 2
 
@@ -503,73 +704,87 @@ if (-not (Test-Path $ccmRepair)) {
 
 
 
-Write-Log "Initial ConfigMgr client validation:"
+if ($ReinstallMode -eq "UninstallReinstall") {
 
-\[void](Test-ConfigMgrClientBasicHealth)
-
-
-
-Write-Log "Running ccmrepair.exe."
-
-$repairExitCode = Invoke-LoggedProcess -FilePath $ccmRepair -TimeoutMinutes $RepairTimeoutMinutes
+\    $localCcmSetup = Get-LocalCcmSetupPath
 
 
 
-if ($repairExitCode -ne 0) {
+\    if ($localCcmSetup) {
 
-\    Write-Log "ccmrepair.exe returned non-zero exit code: $repairExitCode" "WARN"
+\    Write-Log "Uninstalling existing ConfigMgr client."
+
+\    \[void](Invoke-LoggedProcess -FilePath $localCcmSetup -ArgumentList @("/uninstall") -TimeoutMinutes $UninstallTimeoutMinutes)
+
+\    \[void](Wait-ForCcmSetupToFinish -TimeoutMinutes $UninstallTimeoutMinutes)
+
+\    }
+
+\    else {
+
+\    Write-Log "Local ccmsetup.exe not found for uninstall. Continuing with install attempt." "WARN"
+
+\    }
+
+
+
+\    Start-Sleep -Seconds 10
+
+\    $installArgs = Build-CcmSetupArguments
+
+}
+
+else {
+
+\    $installArgs = Build-CcmSetupArguments -ForceInstall
+
+}
+
+
+
+Write-Log "Installing ConfigMgr client."
+
+$installExit = Invoke-LoggedProcess -FilePath $installCcmSetup -ArgumentList $installArgs -TimeoutMinutes $InstallTimeoutMinutes -WorkingDirectory (Split-Path $installCcmSetup -Parent)
+
+
+
+if ($installExit -eq 3010) {
 
 \    $Script:RebootRecommended = $true
 
 }
 
+elseif ($installExit -ne 0) {
 
-
-\[void](Restart-CcmExecService)
-
-
-
-if (-not $SkipHealthEvaluation) {
-
-\    Invoke-ClientHealthEvaluation
-
-}
-
-else {
-
-\    Write-Log "Skipping client health evaluation because -SkipHealthEvaluation was specified." "WARN"
+\    Write-Log "ccmsetup.exe returned non-zero exit code: $installExit" "WARN"
 
 }
 
 
 
-Start-Sleep -Seconds 10
+\[void](Wait-ForCcmSetupToFinish -TimeoutMinutes $InstallTimeoutMinutes)
 
 
 
-if (-not $SkipPolicyTrigger) {
+Write-Log "Waiting 30 seconds before validation."
+
+Start-Sleep -Seconds 30
+
+
+
+$healthy = Test-ConfigMgrClientBasicHealth
+
+if ($healthy) {
 
 \    \[void](Invoke-PolicyTrigger)
 
 }
 
-else {
-
-\    Write-Log "Skipping policy trigger because -SkipPolicyTrigger was specified." "WARN"
-
-}
-
-
-
-Write-Log "Final ConfigMgr client validation:"
-
-$healthy = Test-ConfigMgrClientBasicHealth
-
 
 
 if ($healthy -and $Script:RebootRecommended) {
 
-\    Write-Log "Level 1 repair completed. Basic validation passed. Reboot recommended." "SUCCESS"
+\    Write-Log "Level 2 reinstall completed. Basic validation passed. Reboot recommended." "SUCCESS"
 
 \    exit 3010
 
@@ -577,7 +792,7 @@ if ($healthy -and $Script:RebootRecommended) {
 
 elseif ($healthy) {
 
-\    Write-Log "Level 1 repair completed. Basic validation passed." "SUCCESS"
+\    Write-Log "Level 2 reinstall completed. Basic validation passed." "SUCCESS"
 
 \    exit 0
 
@@ -585,7 +800,7 @@ elseif ($healthy) {
 
 else {
 
-\    Write-Log "Level 1 repair completed, but validation failed. Escalate to Level 2." "ERROR"
+\    Write-Log "Level 2 reinstall completed, but validation failed. Escalate to Level 3." "ERROR"
 
 \    exit 1
 
