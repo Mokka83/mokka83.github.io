@@ -7,7 +7,7 @@ summary: |-2
      - Optional FSP and PKI parameters
      - Does not reset WMI or perform MOF repair
 locale: en
-platform: Win10/Win11
+platform: x64
 riskLevel: Low
 lastReviewed: 2026-07-08T10:25:00.000+02:00
 prerequisites:
